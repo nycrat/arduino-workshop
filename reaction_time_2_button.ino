@@ -39,12 +39,12 @@ int getPressedButton() {
       continue;
     }
 
-    buttonPressed = true;
-
     if (digitalRead(BUTTON_PIN_1) == HIGH) {
+      buttonPressed = true;
       return 1;
     }
     if (digitalRead(BUTTON_PIN_2) == HIGH) {
+      buttonPressed = true;
       return 2;
     }
   }
@@ -62,7 +62,9 @@ void waitForButtonInput() {
     lcd.print(millis() - clickStartTime);
   } else {
     lcd.clear();
-    lcd.print("WRONG BUTTON PRESSED");
+    lcd.print("WRONG BUTTON");
+    lcd.setCursor(0, 1);
+    lcd.print("PRESSED");
   }
 }
 
@@ -112,13 +114,13 @@ void loop() {
 
     waitForButtonInput();
 
-    digitalWrite(LED_PIN_1, HIGH);
-    digitalWrite(LED_PIN_2, HIGH);
+    digitalWrite(LED_PIN_1, LOW);
+    digitalWrite(LED_PIN_2, LOW);
 
     reset();
   }
 
-  if (digitalRead(BUTTON_PIN_1) == HIGH || digitalRead(BUTTON_PIN_2) == HIGH) {
+  if ((digitalRead(BUTTON_PIN_1) == HIGH || digitalRead(BUTTON_PIN_2) == HIGH) && !buttonPressed) {
     lcd.clear();
     lcd.setCursor(0, 1);
     lcd.print("TOO EARLY       ");
