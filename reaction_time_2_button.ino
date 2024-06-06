@@ -60,23 +60,26 @@ void waitForButtonInput() {
     lcd.setCursor(0, 1);
 
     lcd.print(millis() - clickStartTime);
+    lcd.print("ms");
   } else {
     lcd.clear();
-    lcd.print("WRONG BUTTON");
+    lcd.print("Wrong Button");
     lcd.setCursor(0, 1);
-    lcd.print("PRESSED");
+    lcd.print("Pressed ...");
   }
 }
 
 void waitForButtonClick() {
   // wait for release
   while (true) {
+    delay(10);
     if (digitalRead(BUTTON_PIN_1) == LOW && digitalRead(BUTTON_PIN_2) == LOW) {
       break;
     }
   }
   // wait for press
   while (true) {
+    delay(10);
     if (digitalRead(BUTTON_PIN_1) == HIGH || digitalRead(BUTTON_PIN_2) == HIGH) {
       break;
     }
@@ -85,6 +88,7 @@ void waitForButtonClick() {
 }
 
 void reset() {
+  delay(300);
   waitForButtonClick();
 
   digitalWrite(LED_PIN_1, LOW);
@@ -118,6 +122,10 @@ void loop() {
     digitalWrite(LED_PIN_2, LOW);
 
     reset();
+  }
+
+  if (digitalRead(BUTTON_PIN_1) == LOW && digitalRead(BUTTON_PIN_2) == LOW) {
+    buttonPressed = false;
   }
 
   if ((digitalRead(BUTTON_PIN_1) == HIGH || digitalRead(BUTTON_PIN_2) == HIGH) && !buttonPressed) {
