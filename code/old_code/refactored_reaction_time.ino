@@ -3,22 +3,27 @@
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 const int BUTTON_PIN = 10;
+const int LED_PIN = 2;
 
-long click_start_time = -1;
-long timer_start_time = 0;
-long delay_time = random(1000, 3000);
+long clickStartTime;
+long timerStartTime;
+long delayTime;
 
 void setup() {
+  pinMode(BUTTON_PIN, INPUT);
+  pinMode(LED_PIN, OUTPUT);
+
   lcd.init();
   lcd.backlight();
-  lcd.setCursor(0,0);
-  lcd.print("WAIT FOR LIGHT!");
+  lcd.setCursor(0, 0);
+  lcd.print("Press any button");
+  lcd.setCursor(0, 1);
+  lcd.print("to start..");
 
-  pinMode(BUTTON_PIN, INPUT);
-  timer_start_time = millis();
+  reset();
 }
 
-void waitForButton() {
+void waitForClick() {
   while (true) {
     if (digitalRead(BUTTON_PIN) == LOW) {
       break;
@@ -37,17 +42,18 @@ void waitForButton() {
 }
 
 int getClickTime() {
-  waitForButton();
-  return millis() - click_start_time;
+  waitForClick();
+  return millis() - clickStartTime;
 }
 
 void reset() {
-  waitForButton();
+  waitForClick();
+  digitalWrite(LED_PIN, LOW);
   lcd.clear();
   lcd.print("WAIT FOR LIGHT!");
 
-  timer_start_time = millis();
-  delay_time = random(1000, 3000);
+  timerStartTime = millis();
+  delayTime = random(1000, 3000);
 }
 
 void loop() {
@@ -57,17 +63,18 @@ void loop() {
     lcd.print("TOO EARLY       ");
     reset();
   }
-  if (millis() >= timer_start_time + delay_time) {
+  if (millis() >= timerStartTime + delayTime) {
     lcd.clear();
     lcd.print("CLICK!");
-    click_start_time = millis();
+    clickStartTime = millis();
+    digitalWrite(LED_PIN, HIGH);
 
     int result = getClickTime();
 
     lcd.clear();
     lcd.print("YOUR TIME: ");
     lcd.setCursor(0, 1);
-    lcd.print(millis() - click_start_time);
+    lcd.print(millis() - clickStartTime);
     lcd.print("ms");
     reset();
   }
