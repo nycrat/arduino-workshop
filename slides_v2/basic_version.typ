@@ -443,10 +443,10 @@
   #align(center + horizon)[= THANK YOU FOR COMING TO THE WORKSHOP]
 ]
 
-#pagebreak()
-
-#[
-  #align(
-    center + horizon,
-  )[*consider* \ _learning more_ about programming \ _learning more_ about electronic circuits \ _learning more_ about your interests \ *learning more*]
-]
+// #pagebreak()
+//
+// #[
+//   #align(
+//     center + horizon,
+//   )[*consider* \ _learning more_ about programming \ _learning more_ about electronic circuits \ _learning more_ about your interests \ *learning more*]
+// ]
